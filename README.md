@@ -10,7 +10,7 @@
 *   半導体業界の法人顧客（30社）に対する融資・預金情報、営業活動履歴を自然言語で分析
 *   商談メモや政府の半導体政策資料（PDF）をRAG検索で活用
 *   **米国半導体企業の決算発言（Earning Call）**を検索し、市場トレンドを把握
-*   Snowflake Agent/Snowflake Intelligenceによる統合的な情報提供
+*   Cortex Agent/Snowflake Intelligenceによる統合的な情報提供
 
 ## 📚 このハンズオンで学ぶこと
 

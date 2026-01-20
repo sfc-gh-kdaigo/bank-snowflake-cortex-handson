@@ -106,7 +106,7 @@ SET my_email = (
 CALL SEND_EMAIL(
     $my_email,
     'Snowflake Intelligence テストメール',
-    '<h1>テストメール</h1><p>このメールはSnowflake Intelligence Agentのテストです。</p><p>正常に受信できていれば、メール送信機能は正しく動作しています。</p>'
+    '<h1>テストメール</h1><p>このメールはCortex Agentのテストです。</p><p>正常に受信できていれば、メール送信機能は正しく動作しています。</p>'
 );
 
 

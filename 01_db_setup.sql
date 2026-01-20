@@ -57,7 +57,7 @@ CREATE SCHEMA IF NOT EXISTS CORPORATE_BANKING_DB.UNSTRUCTURED_DATA;
 -- 分析用スキーマ（Semantic View格納用）
 CREATE SCHEMA IF NOT EXISTS CORPORATE_BANKING_DB.ANALYTICS;
 
--- エージェント用スキーマ（Snowflake Intelligence Agent格納用）
+-- エージェント用スキーマ（Cortex Agent格納用）
 CREATE SCHEMA IF NOT EXISTS CORPORATE_BANKING_DB.AGENT;
 
 -- ---------------------------------------------------------
