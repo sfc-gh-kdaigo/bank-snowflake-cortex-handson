@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ER図 - 法人営業向けデータモデル</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <style>
+        body {
+            font-family: 'Hiragino Sans', 'Meiryo', sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        h1 {
+            color: #00d9ff;
+            text-align: center;
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+            text-shadow: 0 0 20px rgba(0, 217, 255, 0.3);
+        }
+        .subtitle {
+            color: #8892b0;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 0.95rem;
+        }
+        .mermaid {
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+        }
+        .legend {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 30px;
+            color: #ccd6f6;
+        }
+        .legend h3 {
+            color: #00d9ff;
+            margin-top: 0;
+            font-size: 1rem;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin: 8px 0;
+            font-size: 0.9rem;
+        }
+        .legend-symbol {
+            font-family: monospace;
+            background: rgba(0, 217, 255, 0.1);
+            padding: 4px 10px;
+            border-radius: 4px;
+            margin-right: 12px;
+            color: #00d9ff;
+        }
+        .note {
+            background: rgba(255, 193, 7, 0.1);
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin-top: 20px;
+            border-radius: 0 8px 8px 0;
+            color: #ccd6f6;
+            font-size: 0.85rem;
+        }
+        .export-btn {
+            display: inline-block;
+            background: linear-gradient(135deg, #00d9ff 0%, #0099cc 100%);
+            color: #1a1a2e;
+            padding: 12px 24px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            margin-top: 20px;
+            cursor: pointer;
+            border: none;
+            font-size: 0.9rem;
+        }
+        .export-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(0, 217, 255, 0.4);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📊 ER図 - 法人営業向けデータモデル</h1>
+        <p class="subtitle">Snowflake Intelligence ハンズオン 〜半導体業界特化シナリオ〜</p>
+        
+        <div class="mermaid">
+erDiagram
+    CUSTOMER ||--o{ LOAN : has
+    CUSTOMER ||--o{ DEPOSIT : has
+    CUSTOMER ||--o{ SALES_ACTIVITY : has
+
+    CUSTOMER {
+        number CUSTOMER_ID PK
+        string CUSTOMER_NAME
+        string INDUSTRY_CATEGORY
+        string INDUSTRY_DETAIL
+        string MAIN_PRODUCT
+        number CAPITAL
+        number EMPLOYEE_COUNT
+        number ANNUAL_REVENUE
+        string CREDIT_RATING
+        string RELATIONSHIP_MANAGER
+        string BRANCH_NAME
+    }
+
+    LOAN {
+        number LOAN_ID PK
+        number CUSTOMER_ID FK
+        string LOAN_TYPE
+        string LOAN_PURPOSE
+        number LOAN_AMOUNT
+        number OUTSTANDING_BALANCE
+        number INTEREST_RATE
+        date LOAN_START_DATE
+        date LOAN_END_DATE
+        string LOAN_STATUS
+        string RELATED_SUBSIDY
+        date RECORD_DATE
+    }
+
+    DEPOSIT {
+        number CUSTOMER_ID FK
+        string ACCOUNT_TYPE PK
+        number BALANCE
+        number PREVIOUS_MONTH_BALANCE
+        number AVERAGE_BALANCE
+        date RECORD_DATE
+    }
+
+    SALES_ACTIVITY {
+        number ACTIVITY_ID PK
+        number CUSTOMER_ID FK
+        date ACTIVITY_DATE
+        string ACTIVITY_TYPE
+        string ACTIVITY_PURPOSE
+        string CONTACT_PERSON
+        string ACTIVITY_SUMMARY
+        string DEAL_STAGE
+        number DEAL_AMOUNT
+        string SALES_REP
+    }
+        </div>
+
+        <div class="legend">
+            <h3>📘 凡例・テーブル関係性</h3>
+            <div class="legend-item">
+                <span class="legend-symbol">||--o{</span>
+                <span>1対多 (One to Many) の関係</span>
+            </div>
+            <div class="legend-item">
+                <span class="legend-symbol">PK</span>
+                <span>Primary Key（主キー）</span>
+            </div>
+            <div class="legend-item">
+                <span class="legend-symbol">FK</span>
+                <span>Foreign Key（外部キー）</span>
+            </div>
+            
+            <table style="width: 100%; margin-top: 15px; border-collapse: collapse; color: #ccd6f6; font-size: 0.85rem;">
+                <tr style="border-bottom: 1px solid rgba(255,255,255,0.1);">
+                    <th style="text-align: left; padding: 8px; color: #00d9ff;">親テーブル</th>
+                    <th style="text-align: left; padding: 8px; color: #00d9ff;">子テーブル</th>
+                    <th style="text-align: left; padding: 8px; color: #00d9ff;">関係</th>
+                    <th style="text-align: left; padding: 8px; color: #00d9ff;">結合キー</th>
+                </tr>
+                <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                    <td style="padding: 8px;">CUSTOMER</td>
+                    <td style="padding: 8px;">LOAN</td>
+                    <td style="padding: 8px;">1:N</td>
+                    <td style="padding: 8px;">CUSTOMER_ID</td>
+                </tr>
+                <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                    <td style="padding: 8px;">CUSTOMER</td>
+                    <td style="padding: 8px;">DEPOSIT</td>
+                    <td style="padding: 8px;">1:N</td>
+                    <td style="padding: 8px;">CUSTOMER_ID</td>
+                </tr>
+                <tr>
+                    <td style="padding: 8px;">CUSTOMER</td>
+                    <td style="padding: 8px;">SALES_ACTIVITY</td>
+                    <td style="padding: 8px;">1:N</td>
+                    <td style="padding: 8px;">CUSTOMER_ID</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="note">
+            <strong>💡 画像として保存する方法:</strong><br>
+            ブラウザで右クリック → 「名前を付けて画像を保存」または、<br>
+            スクリーンショットを撮影してください（Mac: Cmd+Shift+4）
+        </div>
+
+        <button class="export-btn" onclick="window.print()">🖨️ PDF として印刷/保存</button>
+    </div>
+
+    <script>
+        mermaid.initialize({ 
+            startOnLoad: true,
+            theme: 'default',
+            er: {
+                diagramPadding: 20,
+                layoutDirection: 'TB',
+                minEntityWidth: 100,
+                minEntityHeight: 75,
+                entityPadding: 15,
+                useMaxWidth: true
+            }
+        });
+    </script>
+</body>
+</html>
