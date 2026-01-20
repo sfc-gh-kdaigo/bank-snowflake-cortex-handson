@@ -8,12 +8,12 @@
 -- =========================================================
 -- 
 -- 📁 ファイル構成:
---    1. 01_db_setup.sql    ← 環境構築・データ投入（先に実行）
---    2. 02_sv_setup.sql    ← Semantic View設定
---    3. 03_rag_setup.sql   ← Cortex Search設定
---    4. 04_ai_functions_demo.sql  ← Cortex AI Functions デモ
---    5. 05_sproc_setup.sql ← 本ファイル（Stored Procedure）
---    6. 06_agent_design.md ← Agent設計書
+--    1. 01_db_setup.sql         ← 環境構築・データ投入（先に実行）
+--    2. 02_ai_functions_demo.sql ← Cortex AI Functions デモ
+--    3. 03_sv_setup.sql         ← Semantic View設定
+--    4. 04_rag_setup.sql        ← Cortex Search設定
+--    5. 05_sproc_setup.sql      ← 本ファイル（Stored Procedure）
+--    6. 06_agent_design.md      ← Agent設計書
 --
 -- ⚠️ 事前準備:
 --   - 01_db_setup.sql を先に実行してデータベースを作成しておくこと
