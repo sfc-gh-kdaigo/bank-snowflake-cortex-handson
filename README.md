@@ -78,7 +78,7 @@
 
 | ファイル名 | 内容 |
 | :--- | :--- |
-| `06_agent_design.md` | Intelligence Agent設計ガイド |
+| `06_agent_design.md` | Cortex Agent設計ガイド |
 | `resources/99_Intelligence_setup.sql` | Snowflake Intelligence公開設定 |
 | `resources/er_diagram.html` | ER図（ブラウザで表示） |
 
