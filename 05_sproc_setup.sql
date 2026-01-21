@@ -191,7 +191,7 @@ END;
 $$;
 
 -- ---------------------------------------------------------
--- 補助プロシージャ: ステージ内のファイル一覧取得
+-- 補助プロシージャ: ステージ内のファイル一覧取得（オプション）
 -- ---------------------------------------------------------
 -- 【用途】
 --   ステージ内にどのファイルがあるか確認するためのヘルパー
@@ -199,7 +199,8 @@ $$;
 -- 【使用例】
 --   CALL LIST_STAGE_FILES();
 -- ---------------------------------------------------------
-
+-- 必要に応じてコメントアウトを解除してください
+/*
 CREATE OR REPLACE PROCEDURE CORPORATE_BANKING_DB.AGENT.LIST_STAGE_FILES()
 RETURNS TABLE (FILE_NAME STRING, FILE_SIZE NUMBER, LAST_MODIFIED TIMESTAMP_LTZ)
 LANGUAGE SQL
@@ -232,15 +233,13 @@ BEGIN
     );
 END;
 $$;
+*/
 
 -- ---------------------------------------------------------
 -- 動作確認: ステージ内ファイル一覧確認
 -- ---------------------------------------------------------
 -- まずステージにファイルが存在するか確認
 LIST @CORPORATE_BANKING_DB.UNSTRUCTURED_DATA.semiconductor_docs;
-
--- または補助プロシージャで確認
-CALL LIST_STAGE_FILES();
 
 -- ---------------------------------------------------------
 -- PDFファイルのアップロード手順（まだの場合）
@@ -281,7 +280,6 @@ SHOW PROCEDURES IN SCHEMA CORPORATE_BANKING_DB.AGENT;
 -- [CORPORATE_BANKING_DB.AGENT]
 --   - SEND_EMAIL（メール送信プロシージャ）
 --   - GET_DOCUMENT_DOWNLOAD_URL（ダウンロードURL生成プロシージャ）
---   - LIST_STAGE_FILES（ステージファイル一覧取得プロシージャ）
 -- 
 -- Agentへのツール登録:
 --   1. Snowsight > AI & ML > Snowflake Intelligence
