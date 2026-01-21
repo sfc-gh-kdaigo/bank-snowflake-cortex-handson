@@ -146,25 +146,120 @@ DECLARE
     sql_stmt STRING;
     expiration_seconds INTEGER;
     stage_name STRING DEFAULT '@CORPORATE_BANKING_DB.UNSTRUCTURED_DATA.semiconductor_docs';
+    file_count INTEGER;
+    available_files STRING;
 BEGIN
     expiration_seconds := expiration_mins * 60;
     
-    sql_stmt := 'SELECT GET_PRESIGNED_URL(' || stage_name || ', ' || '''' || relative_file_path || '''' || ', ' || expiration_seconds || ') AS url';
-
+    -- ステージ内のファイル一覧を取得して、指定ファイルの存在を確認
+    EXECUTE IMMEDIATE 'LIST ' || stage_name;
+    
+    -- 指定されたファイルがステージに存在するか確認（パスの末尾がファイル名と一致するかチェック）
+    SELECT COUNT(*)
+    INTO :file_count
+    FROM TABLE(RESULT_SCAN(LAST_QUERY_ID()))
+    WHERE "name" LIKE '%' || :relative_file_path
+       OR "name" LIKE '%/' || :relative_file_path;
+    
+    -- ファイルが存在しない場合、利用可能なファイル一覧を返す
+    IF (file_count = 0) THEN
+        -- ステージ内のファイル一覧を再取得
+        EXECUTE IMMEDIATE 'LIST ' || stage_name;
+        
+        SELECT LISTAGG(SPLIT_PART("name", '/', -1), ', ') WITHIN GROUP (ORDER BY "name")
+        INTO :available_files
+        FROM TABLE(RESULT_SCAN(LAST_QUERY_ID()))
+        WHERE "name" LIKE '%.pdf' OR "name" LIKE '%.PDF';
+        
+        IF (available_files IS NULL OR available_files = '') THEN
+            RETURN 'エラー: ステージにPDFファイルが存在しません。先にPDFファイルをアップロードしてください。\n\nアップロード方法:\n1. Snowsight > Data > Databases > CORPORATE_BANKING_DB > UNSTRUCTURED_DATA > Stages > semiconductor_docs\n2. 「+ Files」ボタンをクリック\n3. PDFファイルを選択してアップロード';
+        ELSE
+            RETURN 'エラー: 指定されたファイル「' || relative_file_path || '」がステージに見つかりません。\n\n利用可能なPDFファイル:\n' || available_files || '\n\n正しいファイル名を指定してください。';
+        END IF;
+    END IF;
+    
+    -- ファイルが存在する場合、署名付きURLを生成
+    sql_stmt := 'SELECT GET_PRESIGNED_URL(' || stage_name || ', ''' || relative_file_path || ''', ' || expiration_seconds || ') AS url';
     EXECUTE IMMEDIATE :sql_stmt;
 
     SELECT "URL"
     INTO :presigned_url
     FROM TABLE(RESULT_SCAN(LAST_QUERY_ID()));
 
-    RETURN :presigned_url;
+    RETURN presigned_url;
 END;
 $$;
 
 -- ---------------------------------------------------------
+-- 補助プロシージャ: ステージ内のファイル一覧取得
+-- ---------------------------------------------------------
+-- 【用途】
+--   ステージ内にどのファイルがあるか確認するためのヘルパー
+-- 
+-- 【使用例】
+--   CALL LIST_STAGE_FILES();
+-- ---------------------------------------------------------
+
+CREATE OR REPLACE PROCEDURE CORPORATE_BANKING_DB.AGENT.LIST_STAGE_FILES()
+RETURNS TABLE (FILE_NAME STRING, FILE_SIZE NUMBER, LAST_MODIFIED TIMESTAMP_LTZ)
+LANGUAGE SQL
+COMMENT = 'semiconductor_docsステージ内のファイル一覧を取得'
+EXECUTE AS CALLER
+AS
+$$
+DECLARE
+    res RESULTSET;
+BEGIN
+    res := (
+        SELECT 
+            SPLIT_PART("name", '/', -1) AS FILE_NAME,
+            "size" AS FILE_SIZE,
+            "last_modified" AS LAST_MODIFIED
+        FROM TABLE(RESULT_SCAN(LAST_QUERY_ID((
+            SELECT * FROM TABLE(RESULT_SCAN(LAST_QUERY_ID()))
+        ))))
+    );
+    
+    -- LISTコマンドを実行
+    EXECUTE IMMEDIATE 'LIST @CORPORATE_BANKING_DB.UNSTRUCTURED_DATA.semiconductor_docs';
+    
+    RETURN TABLE(
+        SELECT 
+            SPLIT_PART("name", '/', -1) AS FILE_NAME,
+            "size" AS FILE_SIZE,
+            "last_modified"::TIMESTAMP_LTZ AS LAST_MODIFIED
+        FROM TABLE(RESULT_SCAN(LAST_QUERY_ID()))
+    );
+END;
+$$;
+
+-- ---------------------------------------------------------
+-- 動作確認: ステージ内ファイル一覧確認
+-- ---------------------------------------------------------
+-- まずステージにファイルが存在するか確認
+LIST @CORPORATE_BANKING_DB.UNSTRUCTURED_DATA.semiconductor_docs;
+
+-- または補助プロシージャで確認
+CALL LIST_STAGE_FILES();
+
+-- ---------------------------------------------------------
+-- PDFファイルのアップロード手順（まだの場合）
+-- ---------------------------------------------------------
+-- 方法1: Snowsight GUIからアップロード
+--   1. Data > Databases > CORPORATE_BANKING_DB > UNSTRUCTURED_DATA
+--   2. Stages > SEMICONDUCTOR_DOCS をクリック
+--   3. 右上の「+ Files」ボタンをクリック
+--   4. PDFファイルを選択してアップロード
+--
+-- 方法2: SnowSQLからアップロード
+--   PUT file:///path/to/Semiconductor_Strategy_and_Policy.pdf 
+--       @CORPORATE_BANKING_DB.UNSTRUCTURED_DATA.semiconductor_docs;
+--
+-- ---------------------------------------------------------
 -- 動作確認: ドキュメントダウンロードURL生成テスト
--- ----------------------------------------------------------
+-- ---------------------------------------------------------
 -- 半導体政策PDFのダウンロードURL生成（有効期限5分）
+-- ※ファイルがステージに存在しない場合は、利用可能なファイル一覧が表示されます
 CALL GET_DOCUMENT_DOWNLOAD_URL('Semiconductor_Strategy_and_Policy.pdf', 5);
 
 
@@ -186,11 +281,17 @@ SHOW PROCEDURES IN SCHEMA CORPORATE_BANKING_DB.AGENT;
 -- [CORPORATE_BANKING_DB.AGENT]
 --   - SEND_EMAIL（メール送信プロシージャ）
 --   - GET_DOCUMENT_DOWNLOAD_URL（ダウンロードURL生成プロシージャ）
+--   - LIST_STAGE_FILES（ステージファイル一覧取得プロシージャ）
 -- 
 -- Agentへのツール登録:
 --   1. Snowsight > AI & ML > Snowflake Intelligence
 --   2. CORPORATE_SALES_AGENT を編集
 --   3. Tools > Add Tool > Stored Procedure
---   4. 上記2つのプロシージャを追加
+--   4. 上記プロシージャを追加
+-- 
+-- トラブルシューティング:
+--   - GET_DOCUMENT_DOWNLOAD_URL で「ファイルが見つかりません」エラーの場合:
+--     1. LIST @CORPORATE_BANKING_DB.UNSTRUCTURED_DATA.semiconductor_docs; でファイル確認
+--     2. ファイルがない場合は、上記「PDFファイルのアップロード手順」を参照
 -- 
 -- =========================================================
