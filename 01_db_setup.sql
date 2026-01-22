@@ -888,7 +888,8 @@ ORDER BY TOTAL_DEAL_AMOUNT_MM DESC;
 --   - semiconductor_docs（ステージ）
 -- 
 -- 次のステップ:
---   → 02_sv_setup.sql（Semantic View設定）
---   → 03_rag_setup.sql（Cortex Search設定）
+--   → 02_ai_functions_demo.sql（Cortex AI Functions デモ）
+--   → 03_sv_setup.sql（Semantic View設定）
+--   → 04_rag_setup.sql（Cortex Search設定）
 -- 
 -- =========================================================

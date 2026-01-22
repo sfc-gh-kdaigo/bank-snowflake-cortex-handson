@@ -2,7 +2,7 @@
 -- 法人営業向け Snowflake Intelligence ハンズオン
 -- 〜半導体業界特化シナリオ〜
 -- 
--- 04_ai_functions_demo.sql - Cortex AI Functions デモ
+-- 02_ai_functions_demo.sql - Cortex AI Functions デモ
 -- =========================================================
 -- 作成日: 2026/01
 -- =========================================================
@@ -178,7 +178,7 @@ FROM weekly_metrics;
 
 
 -- =========================================================
--- 04_ai_functions_demo.sql 完了
+-- 02_ai_functions_demo.sql 完了
 -- =========================================================
 -- 
 -- 実行したCortex AI Functions:

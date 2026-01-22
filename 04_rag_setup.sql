@@ -2,7 +2,7 @@
 -- 法人営業向け Snowflake Intelligence ハンズオン
 -- 〜半導体業界特化シナリオ〜
 -- 
--- 03_rag_setup.sql - Cortex Search設定（RAG用）
+-- 04_rag_setup.sql - Cortex Search設定（RAG用）
 -- =========================================================
 -- 作成日: 2026/01
 -- =========================================================
@@ -199,41 +199,33 @@ SHOW CORTEX SEARCH SERVICES IN DATABASE SNOWFLAKE_PUBLIC_DATA_CORTEX_KNOWLEDGE_E
 -- ---------------------------------------------------------
 -- Step 7: Cortex Search動作確認
 -- ---------------------------------------------------------
--- サンプル質問1: 「半導体の設備投資に使える政府の補助金は？」
--- サンプル質問2: 「ラピダスはどのような支援を受けていますか？」
--- サンプル質問3: 「TSMCの熊本進出の経済効果は？」
-
--- 政府資料検索テスト（コメントを外して実行）
-/*
-SELECT SNOWFLAKE.CORTEX.SEARCH_PREVIEW(
-    'GOVERNMENT_DOCS_SEARCH',
-    '半導体の設備投資に使える政府の補助金は？',
-    5
-);
-*/
-
--- 商談履歴検索テスト（コメントを外して実行）
-/*
-SELECT SNOWFLAKE.CORTEX.SEARCH_PREVIEW(
-    'MEETING_NOTES_SEARCH',
-    '信越化学のウェハ工場増設について',
-    5
-);
-*/
-
--- Earning Call検索テスト（Marketplace取得後、コメントを外して実行）
--- ※ データベース名・サービス名はMarketplace取得時の設定に合わせて変更してください
-/*
-SELECT SNOWFLAKE.CORTEX.SEARCH_PREVIEW(
-    'SNOWFLAKE_PUBLIC_DATA_CORTEX_KNOWLEDGE_EXTENSIONS.AI.COMPANY_EVENT_TRANSCRIPT_CORTEX_SEARCH_SERVICE',
-    'NVIDIA AI GPU demand supply chain',
-    5
-);
-*/
+-- 
+-- Snowsight の Playground で検索テストを行ってみましょう
+-- 
+-- 手順:
+--   1. Snowsight > AI & ML > Search を開く
+--   2. 作成した検索サービスを選択（例: GOVERNMENT_DOCS_SEARCH）
+--   3. 「Playground」タブをクリック
+--   4. 検索クエリを入力してテスト
+-- 
+-- サンプル質問（Playgroundで試してみてください）:
+--   - GOVERNMENT_DOCS_SEARCH:
+--     「半導体の設備投資に使える政府の補助金制度を教えてください」
+--     「ラピダスはどのような支援を受けていますか教えてください」
+--     「TSMCの熊本進出の経済効果を教えてください」
+--   
+--   - MEETING_NOTES_SEARCH:
+--     「信越化学のウェハ工場増設について当時の商談メモを教えてください」
+--     「東京エレクトロンの熊本新工場の進捗を教えてください」
+--
+--   - Earning Call（Marketplace取得後）:
+--     「NVIDIA AI GPU demand supply chain」
+--
+-- ---------------------------------------------------------
 
 
 -- =========================================================
--- 03_rag_setup.sql 完了
+-- 04_rag_setup.sql 完了
 -- =========================================================
 -- 
 -- 作成されたオブジェクト:
@@ -253,7 +245,6 @@ SELECT SNOWFLAKE.CORTEX.SEARCH_PREVIEW(
 --   - SupplyChain__Semiconductors_Govsupport.pdf（サプライチェーン支援策）
 -- 
 -- 次のステップ:
---   → 04_ai_functions_demo.sql（Cortex AI Functions デモ）
 --   → 05_sproc_setup.sql（Stored Procedure）
 --   → 06_agent_design.md を参考にAgentを作成
 -- 
