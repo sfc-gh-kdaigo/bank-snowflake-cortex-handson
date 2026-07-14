@@ -52,7 +52,7 @@ SELECT * FROM CORPORATE_BANKING_DB.UNSTRUCTURED_DATA.MEETING_NOTES LIMIT 10;
 -- =============================================================================
 -- 異なるLLMモデルで同じ質問を実行して比較
 
-SELECT AI_COMPLETE('claude-4-sonnet', 'Snowflakeの特徴を50字以内で教えてください。') AS RESPONSE;
+SELECT AI_COMPLETE('claude-sonnet-4-6', 'Snowflakeの特徴を50字以内で教えてください。') AS RESPONSE;
 
 SELECT AI_COMPLETE('openai-gpt-4.1', 'Snowflakeの特徴を50字以内で教えてください。') AS RESPONSE;
 
