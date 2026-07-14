@@ -1,8 +1,8 @@
 -- =========================================================
--- 法人営業向け Snowflake Intelligence ハンズオン
+-- 法人営業向け Snowflake CoWork ハンズオン
 -- 〜半導体業界特化シナリオ〜
 -- 
--- 99_Intelligence_setup.sql - Snowflake Intelligence公開設定
+-- 99_Intelligence_setup.sql - Snowflake CoWork公開設定
 -- =========================================================
 -- 作成日: 2026/01
 -- =========================================================
@@ -27,11 +27,11 @@ USE DATABASE CORPORATE_BANKING_DB;
 USE WAREHOUSE CORPORATE_BANKING_WH;
 
 -- =========================================================
--- Snowflake Intelligence への公開設定
+-- Snowflake CoWork への公開設定
 -- =========================================================
 -- 
 -- 【概要】
---   GUIで作成したCortex AgentをSnowflake Intelligenceインターフェースに
+--   GUIで作成したCortex AgentをSnowflake CoWorkインターフェースに
 --   公開するための設定です。
 -- 
 -- 【前提】
@@ -39,10 +39,10 @@ USE WAREHOUSE CORPORATE_BANKING_WH;
 --   - 必要なツール（Analyst、Search、Stored Procedure）が登録済み
 -- 
 -- ---------------------------------------------------------
--- Snowflake Intelligence オブジェクトの作成（アカウントに1つのみ）
+-- Snowflake CoWork オブジェクトの作成（アカウントに1つのみ）
 CREATE SNOWFLAKE INTELLIGENCE IF NOT EXISTS SNOWFLAKE_INTELLIGENCE_OBJECT_DEFAULT;
 
--- エージェントをSnowflake Intelligenceに追加
+-- エージェントをSnowflake CoWorkに追加
 ALTER SNOWFLAKE INTELLIGENCE SNOWFLAKE_INTELLIGENCE_OBJECT_DEFAULT 
     ADD AGENT CORPORATE_BANKING_DB.AGENT.CORPORATE_SALES_AGENT;
 

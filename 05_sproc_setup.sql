@@ -1,5 +1,5 @@
 -- =========================================================
--- 法人営業向け Snowflake Intelligence ハンズオン
+-- 法人営業向け Snowflake CoWork ハンズオン
 -- 〜半導体業界特化シナリオ〜
 -- 
 -- 05_sproc_setup.sql - Stored Procedure（Agentカスタムツール）
@@ -105,7 +105,7 @@ SET my_email = (
 -- Step 2: 変数を使ってメール送信
 CALL SEND_EMAIL(
     $my_email,
-    'Snowflake Intelligence テストメール',
+    'Snowflake CoWork テストメール',
     '<h1>テストメール</h1><p>このメールはCortex Agentのテストです。</p><p>正常に受信できていれば、メール送信機能は正しく動作しています。</p>'
 );
 
@@ -282,7 +282,7 @@ SHOW PROCEDURES IN SCHEMA CORPORATE_BANKING_DB.AGENT;
 --   - GET_DOCUMENT_DOWNLOAD_URL（ダウンロードURL生成プロシージャ）
 -- 
 -- Agentへのツール登録:
---   1. Snowsight > AI & ML > Snowflake Intelligence
+--   1. Snowsight > AI & ML > Snowflake CoWork
 --   2. CORPORATE_SALES_AGENT を編集
 --   3. Tools > Add Tool > Stored Procedure
 --   4. 上記プロシージャを追加

@@ -1,4 +1,4 @@
-# 🚀 法人営業向け Snowflake Intelligence ハンズオン - README
+# 🚀 法人営業向け Snowflake CoWork ハンズオン - README
 
 このアセットは、**Snowflake Cortex AI**の主要機能を活用し、法人営業担当者向けのAIアシスタントを構築するためのハンズオンです。
 
@@ -10,7 +10,7 @@
 *   半導体業界の法人顧客（30社）に対する融資・預金情報、営業活動履歴を自然言語で分析
 *   商談メモや政府の半導体政策資料（PDF）をRAG検索で活用
 *   **米国半導体企業の決算発言（Earning Call）**を検索し、市場トレンドを把握
-*   Cortex Agent/Snowflake Intelligenceによる統合的な情報提供
+*   Cortex Agent/Snowflake CoWorkによる統合的な情報提供
 
 ## 📚 このハンズオンで学ぶこと
 
@@ -30,7 +30,7 @@
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│                  Snowflake Intelligence                     │
+│                  Snowflake CoWork                     │
 │                    （チャットUI）                            │
 └─────────────────────────────────────────────────────────────┘
                               │
@@ -54,7 +54,7 @@
 
 | コンポーネント | 役割 |
 | :--- | :--- |
-| **Snowflake Intelligence** | Cortex Agentを利用するためのチャットボットUI。法人営業担当者が自然言語で質問を入力。 |
+| **Snowflake CoWork** | Cortex Agentを利用するためのチャットボットUI。法人営業担当者が自然言語で質問を入力。 |
 | **Cortex Agent** | ユーザーの質問を解析し、適切なツール（Analyst/Search/Sproc）を自動選択・実行するオーケストレーション層。 |
 | **Cortex Analyst（ツール）** | Semantic Viewを通じて構造化データ（顧客・融資・預金・営業活動）に対して自然言語からSQLを生成・実行。 |
 | **Cortex Search - 自社データ（ツール）** | 商談履歴テキストや政府資料PDFに対するRAG検索を提供。 |
@@ -79,7 +79,7 @@
 | ファイル名 | 内容 |
 | :--- | :--- |
 | `06_agent_design.md` | Cortex Agent設計ガイド |
-| `resources/99_Intelligence_setup.sql` | Snowflake Intelligence公開設定 |
+| `resources/99_Intelligence_setup.sql` | Snowflake CoWork公開設定 |
 | `resources/er_diagram.html` | ER図（ブラウザで表示） |
 
 ### データファイル
@@ -119,9 +119,9 @@
    - **Cortex Search（Marketplace）**: Earning Call Search Serviceを指定
    - **Stored Procedure**: `SEND_EMAIL`、`GET_DOCUMENT_DOWNLOAD_URL`を指定
 
-### Step 8: Snowflake Intelligenceへ公開
-9. `resources/99_Intelligence_setup.sql` を実行してAgentをSnowflake Intelligenceに公開
-10. Snowflake Intelligenceから作成したCortex Agentを選択してチャット開始
+### Step 8: Snowflake CoWorkへ公開
+9. `resources/99_Intelligence_setup.sql` を実行してAgentをSnowflake CoWorkに公開
+10. Snowflake CoWorkから作成したCortex Agentを選択してチャット開始
 
 ## 🧑‍💻 対象者
 

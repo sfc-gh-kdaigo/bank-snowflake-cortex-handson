@@ -1,5 +1,5 @@
 -- =========================================================
--- 法人営業向け Snowflake Intelligence ハンズオン
+-- 法人営業向け Snowflake CoWork ハンズオン
 -- 〜半導体業界特化シナリオ〜
 -- 
 -- 04_rag_setup.sql - Cortex Search設定（RAG用）

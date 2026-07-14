@@ -1,5 +1,5 @@
 -- =========================================================
--- 法人営業向け Snowflake Intelligence ハンズオン
+-- 法人営業向け Snowflake CoWork ハンズオン
 -- 〜半導体業界特化シナリオ〜
 -- 
 -- 03_sv_setup.sql - Semantic View設定（Cortex Analyst用）
