@@ -9,6 +9,6 @@ CREATE OR REPLACE API INTEGRATION git_api_integration
  ENABLED = TRUE;
 
 -- zero to Snowflake用のGitHubリポジトリを登録
-CREATE OR REPLACE GIT REPOSITORY bank_snowflake_cortex_handson
+CREATE OR REPLACE GIT REPOSITORY bank_sf_cortex_handson
  API_INTEGRATION = git_api_integration
  ORIGIN = 'https://github.com/sfc-gh-kdaigo/bank-snowflake-cortex-handson.git';
